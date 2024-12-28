@@ -7,8 +7,13 @@ DB_USER = "auth_user"
 DB_PASSWORD = "auth_password"
 
 conn = psycopg2.connect(
-    host=DB_HOST, database=DB_NAME, user=DB_USER, password=DB_PASSWORD, cursor_factory=RealDictCursor
+    dbname="auth_service",
+    user="admin",
+    password="password123",
+    host="localhost",
+    port="5432"
 )
+
 
 def get_user(username: str):
     with conn.cursor() as cursor:
