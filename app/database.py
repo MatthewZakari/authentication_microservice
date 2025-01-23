@@ -28,6 +28,7 @@ def get_db_connection():
         print(f"Database connection error: {e}")
         raise
 
+'''
 def get_user(username: str):
     """
     Fetch a user from the database by username.
@@ -62,4 +63,4 @@ def add_user(user):
     except Exception as e:
         print(f"Error adding user: {e}")
         raise
-
+'''
