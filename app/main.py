@@ -189,6 +189,8 @@ def register_user(request: RegisterRequest):
     finally:
         cursor.close()
         conn.close()
+
+    print("\n")
     return {"message": "User registered successfully!"}
 
 @app.post("/login")
@@ -215,6 +217,7 @@ def login(request: LoginRequest):
         access_token = create_access_token(
             data={"sub": user['username']}, expires_delta=access_token_expires
         )
+        print("\n")
         return {"access_token": access_token, "token_type": "bearer"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error during login: {str(e)}")
@@ -249,6 +252,7 @@ def get_all_users():
     try:
         cursor.execute("SELECT username, full_name, email, roles FROM users")
         users = cursor.fetchall()
+        print("\n")
         return [
             {
                 "username": user['username'],
@@ -283,6 +287,7 @@ def get_user_by_username(username: str):
         user = cursor.fetchone()
         if not user:
             raise HTTPException(status_code=404, detail="User not found")
+        print("\n")
         return {
             "username": user['username'],
             "full_name": user['full_name'],
@@ -305,5 +310,6 @@ def protected_route(current_user: UserDB = Depends(get_current_user)):
     Returns:
         dict: A success message with the username.
     """
+    print("\n")
     return {"message": f"Access granted to {current_user.username}"}
 
