@@ -47,7 +47,7 @@ Clone the repository:
 bash
 Copy
 Edit
-git clone https://github.com/your-username/authentication-microservice.git
+git clone https://github.com/MatthewZakari/authentication_microservice.git
 cd authentication-microservice
 Install dependencies:
 
@@ -156,17 +156,6 @@ Integrate with third-party identity providers for federated authentication.
 Conclusion
 This Authentication Microservice is a foundational implementation showcasing the principles of secure authentication in a microservice architecture. With its modular and scalable design, it serves as a robust solution for managing user authentication and access control in various applications.
 
-For questions or contributions, feel free to reach out or open an issue on the repository.
+For questions or contributions, feel free to reach out or open an issue on the repository
 
-vbnet
-Copy
-Edit
-
-This `README.md` file provides a professional overview of the project, guiding users and developers through setup, usage, and project details. Let me know if you’d like any adjustments!
-
-
-
-
-
-
-
+This `README.md` file provides a professional overview of the project, guiding users and developers through setup, usage, and project details.
