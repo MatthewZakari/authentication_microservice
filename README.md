@@ -17,123 +17,88 @@ This project is a lightweight and scalable authentication microservice built usi
 - **PostgreSQL**: Relational database for storing user information.
 - **bcrypt**: Library for hashing and verifying passwords.
 - **JWT (PyJWT)**: Token generation and validation for secure user sessions.
-- **Docker**: Containerized deployment for portability and easy scaling.
 - **Uvicorn**: ASGI server for running the FastAPI application.
 
 ### Directory Structure
 
-```plaintext
+
 authentication_microservice/
 ├── app/
-│   ├── main.py         # Main application logic
-│   ├── database.py     # Database connection and operations
-│   ├── models.py       # Pydantic models for request validation
-│   ├── security.py     # Functions for password hashing and JWT handling
-│   └── tests/          # Unit tests for endpoints and logic
+│   ├── main.py         
+│   ├── database.py     
+│   ├── __init__.py
+│
+├── config/
+│   ├── settings.py 
+│
 ├── db/
-│   ├── auth_service_dump.sql  # SQL dump for setting up the database
-├── Dockerfile          # Docker configuration
-├── requirements.txt    # Python dependencies
-└── README.md           # Project documentation
+│   ├── auth_service_dump.sql  
+├── requirements.txt    
+└── README.md           
+
 
 Setup Instructions
 Prerequisites
 Python 3.8 or higher
 PostgreSQL
-Docker (optional for containerization)
+
 Installation
 Clone the repository:
-
-bash
-Copy
-Edit
 git clone https://github.com/MatthewZakari/authentication_microservice.git
 cd authentication-microservice
+
 Install dependencies:
-
-bash
-Copy
-Edit
 pip install -r requirements.txt
-Set up the database:
 
-Start your PostgreSQL server.
+Set up the database:
+sudo service postgresql start
+
 Create a database named auth_service:
 sql
-Copy
-Edit
 CREATE DATABASE auth_service;
 Import the database dump:
-bash
-Copy
-Edit
 psql -U admin -d auth_service -f db/auth_service_dump.sql
+
 Run the application:
-
-bash
-Copy
-Edit
-uvicorn app.main:app --reload
-Docker (Optional)
-Build the Docker image:
-
-bash
-Copy
-Edit
-docker build -t authentication_microservice .
-Run the container:
-
-bash
-Copy
-Edit
-docker run -p 8000:8000 authentication_microservice
+uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 Access the application at http://127.0.0.1:8000.
 
-API Endpoints
+API Endpoints:
 Public Endpoints
-POST /register
+Registration: Register a new user by sending a POST request to the /register/ endpoint:
 
-Description: Register a new user.
-Payload:
-json
-Copy
-Edit
-{
-  "username": "example",
-  "full_name": "John Doe",
-  "email": "example@mail.com",
-  "password": "password123",
-  "roles": ["user"]
-}
-POST /login
+curl -X POST \
+-H "Content-Type: application/json" \
+-d '{"username": "newuser", "full_name": "New User", "email": "newuser@example.com", "password": "securepassword", "roles": ["user"]}' \
+http://localhost:8000/register/
 
-Description: Log in and receive a JWT.
-Payload:
-json
-Copy
-Edit
-{
-  "username": "example",
-  "password": "password123"
-}
-Response:
-json
-Copy
-Edit
-{
-  "access_token": "eyJhbGciOiJIUzI1NiIsInR...",
-  "token_type": "bearer"
-}
-Protected Endpoints
-GET /protected
-Description: Access a resource requiring authentication.
-Headers:
-json
-Copy
-Edit
-{
-  "Authorization": "Bearer <JWT>"
-}
+Upon successful registration, a confirmation message is returned.
+
+Login: Log in with the registered credentials using the /login endpoint:
+
+curl -X POST \
+-H "Content-Type: application/json" \
+-d '{"username": "linus", "password": "securepassword"}' \
+http://localhost:8000/login
+
+This returns a JWT token.
+
+Protected Route: Access a protected route, /protected-route/, using the JWT token:
+
+curl -X GET \
+-H "Authorization: Bearer "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJsaW51cyIsImV4cCI6MTczNzcwMjI1MH0.Swn-dkMkHF38eKqPayqnch9gFJxSVSsz9lP7rt3ZjOI"" \
+http://localhost:8000/protected-route/
+
+Replace <your_access_token> with the token received from the login response. If the token is valid, access is granted; otherwise, an error is returned.
+
+Error Handling: Demonstrate what happens with an invalid or expired token:
+
+curl -X GET \
+-H "Authorization: Bearer invalid_or_expired_token" \
+http://localhost:8000/protected-route/
+
+The system responds with an appropriate error message, ensuring secure access control."
+
 Challenges and Improvements
 Challenges:
 
