@@ -48,7 +48,7 @@ git clone https://github.com/MatthewZakari/authentication_microservice.git
 cd authentication-microservice
 
 Install dependencies:
-pip install -r requirements.txt
+pip install -r requirements.txt (some requirements was installed while debugging and might not have been added here, please do well to install them to avoid errors)
 
 Set up the database:
 sudo service postgresql start
